@@ -1,66 +1,57 @@
 package lw04.prelab;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(Main.class.getResourceAsStream("branches.txt"));
+        Scanner dataScanner = new Scanner(Main.class.getResourceAsStream("branches.txt"));
 
-        int n = sc.nextInt();
-        int[] branches = new int[n];
-        for (int i = 0; i < n; i++) {
-            branches[i] = sc.nextInt();
+        int totalBranches = dataScanner.nextInt();
+        int[] stabilityValues = new int[totalBranches];
+        for (int idx = 0; idx < totalBranches; idx++) {
+            stabilityValues[idx] = dataScanner.nextInt();
         }
 
-        int m = sc.nextInt();
-        int[] targets = new int[m];
-        for (int i = 0; i < m; i++) {
-            targets[i] = sc.nextInt();
+        int totalTargets = dataScanner.nextInt();
+        int[] searchTargets = new int[totalTargets];
+        for (int idx = 0; idx < totalTargets; idx++) {
+            searchTargets[idx] = dataScanner.nextInt();
         }
-        sc.close();
+        dataScanner.close();
 
-        int passes = 3;
-        int i = 1;
-        while (i <= passes && i < n) {
-            int key = branches[i];
+        int maxPasses = 3;
+        for (int i = 1; i <= maxPasses && i < totalBranches; i++) {
+            int currentKey = stabilityValues[i];
             int j = i - 1;
-            while (j >= 0 && branches[j] < key) {
-                branches[j + 1] = branches[j];
+            
+            while (j >= 0 && stabilityValues[j] < currentKey) {
+                stabilityValues[j + 1] = stabilityValues[j];
                 j--;
             }
-            branches[j + 1] = key;
-            i++;
+            stabilityValues[j + 1] = currentKey;
         }
 
-        int idxPrint = 0;
-        while (idxPrint < n) {
-            System.out.print(branches[idxPrint]);
-            if (idxPrint < n - 1) {
+        for (int idx = 0; idx < totalBranches; idx++) {
+            if (idx > 0) {
                 System.out.print(" ");
             }
-            idxPrint++;
+            System.out.print(stabilityValues[idx]);
         }
         System.out.println();
 
-        for (int t = 0; t < m; t++) {
-            int currentTarget = targets[t];
-            boolean isFound = false;
-            int foundIndex = -1;
-
-            int k = 0;
-            while (k < n) {
-                if (branches[k] == currentTarget) {
-                    foundIndex = k;
-                    isFound = true;
+        for (int t = 0; t < totalTargets; t++) {
+            int matchIdx = -1;
+            for (int idx = 0; idx < totalBranches; idx++) {
+                if (stabilityValues[idx] == searchTargets[t]) {
+                    matchIdx = idx;
                     break;
                 }
-                k++;
             }
 
-            if (isFound) {
-                System.out.println(currentTarget + ": FOUND at index " + foundIndex);
+            if (matchIdx != -1) {
+                System.out.println(searchTargets[t] + ": FOUND at index " + matchIdx);
             } else {
-                System.out.println(currentTarget + ": NOT FOUND");
+                System.out.println(searchTargets[t] + ": NOT FOUND");
             }
         }
     }
