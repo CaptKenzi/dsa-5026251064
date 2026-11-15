@@ -1,4 +1,3 @@
-
 package lw05.prelab;
 
 import java.util.*;
@@ -161,6 +160,6 @@ public class Main {
         dfs(start);
         printPath(dfsOrder);
 
-        dijkstraAlg(start, destination);
+        dijkstraAlg(start, destination):
     }
 }
