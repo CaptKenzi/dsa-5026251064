@@ -160,6 +160,6 @@ public class Main {
         dfs(start);
         printPath(dfsOrder);
 
-        dijkstraAlg(start, destination):
+        dijkstraAlg(start, destination);
     }
 }
